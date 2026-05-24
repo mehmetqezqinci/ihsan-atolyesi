@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İhsân · Story Prompt Atölyesi · Dilara Ceylan Yardım Derneği</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f4ecd8;
+  --paper-2: #ebdfc4;
+  --paper-3: #e0d2b3;
+  --ink: #2c1810;
+  --ink-soft: #5c3d1f;
+  --gold: #a47b3a;
+  --gold-deep: #7a5827;
+  --rose: #8b3a2f;
+  --rose-deep: #6b2a22;
+  --teal: #2d5a52;
+  --line: #c8b89a;
+  --shadow: rgba(60, 35, 15, 0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  padding: 28px 16px 60px;
+  background-image:
+    radial-gradient(ellipse 900px 500px at 15% -5%, rgba(164, 123, 58, 0.10), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 95% 100%, rgba(139, 58, 47, 0.08), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0 0.1 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.container { max-width: 780px; margin: 0 auto; }
+
+/* ============ HEADER ============ */
+header {
+  text-align: center;
+  padding: 24px 0 36px;
+  position: relative;
+}
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.ornament-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.ornament-icon {
+  color: var(--gold);
+  font-size: 18px;
+}
+.brand-line {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  font-weight: 500;
+}
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(42px, 6vw, 58px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 16px 0 12px;
+}
+h1 .accent {
+  font-style: italic;
+  color: var(--rose-deep);
+  font-weight: 400;
+}
+.subtitle {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+}
+
+/* ============ API KEY SETUP ============ */
+.api-setup {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px dashed var(--line);
+  border-radius: 4px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.api-setup.hidden { display: none; }
+.api-icon {
+  font-size: 22px;
+  color: var(--gold);
+  margin-top: 2px;
+}
+.api-text {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.api-text strong { color: var(--ink); font-weight: 600; }
+.api-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.api-input-row input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', monospace;
+  font-size: 12px;
+  border-radius: 3px;
+  outline: none;
+}
+.api-input-row input:focus { border-color: var(--gold); }
+.api-link {
+  color: var(--rose-deep);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+}
+
+/* ============ CONFIG PANEL ============ */
+.config-panel {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.config-panel::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px; right: -1px;
+  height: 3px;
+  background: linear-gradient(to right, var(--gold), var(--rose), var(--gold));
+}
+
+.config-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.theme-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.chip {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-style: italic;
+  cursor: pointer;
+  border-radius: 100px;
+  transition: all 0.25s;
+}
+.chip:hover { border-color: var(--gold); color: var(--ink); }
+.chip.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* ============ MAIN CARD ============ */
+.today-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 36px 32px;
+  margin-bottom: 24px;
+  position: relative;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 25px 50px -25px var(--shadow),
+    0 10px 20px -10px var(--shadow);
+}
+
+/* Ornamental corners */
+.today-card::before, .today-card::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--gold);
+}
+.today-card::before {
+  top: 10px; left: 10px;
+  border-right: none;
+  border-bottom: none;
+}
+.today-card::after {
+  bottom: 10px; right: 10px;
+  border-left: none;
+  border-top: none;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--paper-3);
+}
+.content-type-tag {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--rose-deep);
+}
+.date-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+
+.content-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  line-height: 1.4;
+  color: var(--ink);
+  font-weight: 400;
+  text-align: center;
+  padding: 16px 8px;
+  position: relative;
+}
+.content-text::before, .content-text::after {
+  content: '"';
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 60px;
+  color: var(--gold);
+  opacity: 0.4;
+  position: absolute;
+  font-weight: 600;
+}
+.content-text::before { top: -8px; left: -4px; }
+.content-text::after { bottom: -28px; right: -4px; }
+.content-source {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 18px;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+}
+.content-source::before {
+  content: '— ';
+  color: var(--gold);
+}
+
+/* Loading state */
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+}
+.loading-dots {
+  display: inline-block;
+  width: 20px;
+}
+.loading-dots::after {
+  content: '...';
+  animation: dots 1.5s infinite;
+}
+@keyframes dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60%, 100% { content: '...'; }
+}
+
+/* ============ STYLE & PROMPT ============ */
+.section-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  font-weight: 600;
+  margin: 32px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-label::before, .section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--line), transparent);
+}
+.section-label::before { background: linear-gradient(to left, var(--line), transparent); }
+
+.style-tag {
+  display: inline-block;
+  background: linear-gradient(to bottom, var(--paper-2), var(--paper-3));
+  color: var(--ink);
+  padding: 8px 18px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  margin-bottom: 18px;
+}
+
+.prompt-box {
+  background: #1a0f08;
+  color: #f4ecd8;
+  padding: 22px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+  font-size: 12.5px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 380px;
+  overflow-y: auto;
+  border: 1px solid var(--gold-deep);
+  position: relative;
+}
+.prompt-box::-webkit-scrollbar { width: 6px; }
+.prompt-box::-webkit-scrollbar-track { background: transparent; }
+.prompt-box::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 3px; }
+
+/* ============ BUTTONS ============ */
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+button {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 12px 22px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+button:hover:not(:disabled) {
+  background: var(--rose-deep);
+  border-color: var(--rose-deep);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px -4px var(--shadow);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+button.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+button.secondary:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--paper);
+}
+button.primary-gold {
+  background: var(--gold-deep);
+  border-color: var(--gold-deep);
+}
+button.primary-gold:hover:not(:disabled) {
+  background: var(--rose-deep);
+  border-color: var(--rose-deep);
+}
+
+.gemini-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 14px 26px;
+  background: var(--rose-deep);
+  color: var(--paper);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 3px;
+  transition: all 0.25s;
+}
+.gemini-link:hover {
+  background: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px -4px var(--shadow);
+}
+
+/* ============ TOAST ============ */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 26px;
+  border-radius: 3px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 0.35s ease;
+  z-index: 100;
+  border: 1px solid var(--gold);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(--rose-deep); border-color: var(--rose); }
+
+/* ============ FOOTER ============ */
+footer {
+  margin-top: 60px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 1px;
+  position: relative;
+}
+footer::before {
+  content: '✦';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--paper);
+  padding: 0 12px;
+  color: var(--gold);
+  font-size: 16px;
+}
+footer em {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--rose-deep);
+  font-size: 17px;
+  display: block;
+  margin-bottom: 14px;
+}
+.helper-text {
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-top: 10px;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ============ MOBILE ============ */
+@media (max-width: 600px) {
+  body { padding: 18px 12px 40px; }
+  .today-card { padding: 28px 20px; }
+  .content-text { font-size: 22px; }
+  h1 { font-size: 36px; }
+  .button-row { flex-direction: column; }
+  .button-row button { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="ornament">
+    <div class="ornament-line"></div>
+    <span class="ornament-icon">✦</span>
+    <div class="ornament-line"></div>
+  </div>
+  <div class="brand-line">Dilara Ceylan Yardım Derneği</div>
+  <h1>İhsân <span class="accent">Atölyesi</span></h1>
+  <p class="subtitle">Her gün, kalbe dokunan bir söz; her sözle birlikte, ruha şifa olan bir görsel.</p>
+</header>
+
+<!-- API Key Setup -->
+<div class="api-setup" id="apiSetup">
+  <div class="api-icon">⚱</div>
+  <div class="api-text">
+    <strong>Tek seferlik kurulum</strong><br>
+    Google Gemini'nin <strong>tamamen ücretsiz</strong> API'siyle her seferinde yeni, özgün içerik üretmek için bir anahtara ihtiyaç var. Kredi kartı bile istenmiyor — günde 1.000 istek hakkın oluyor (yıllarca yeter). Anahtar yalnızca tarayıcında saklanır.
+    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="api-link">Google AI Studio'dan ücretsiz anahtar al →</a>
+    <div class="api-input-row">
+      <input type="password" id="apiKeyInput" placeholder="AIzaSy..." autocomplete="off">
+      <button onclick="saveApiKey()" class="primary-gold">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tema Seçimi -->
+<div class="config-panel">
+  <div class="config-label">Bugünün Teması</div>
+  <div class="theme-chips" id="themeChips"></div>
+
+  <div class="config-label">İçerik Türü</div>
+  <div class="theme-chips" id="typeChips"></div>
+</div>
+
+<!-- Ana Kart -->
+<div class="today-card">
+  <div class="meta-row">
+    <span class="content-type-tag" id="contentTypeLabel">—</span>
+    <span class="date-label" id="dateLabel">—</span>
+  </div>
+  <div id="contentArea">
+    <div class="loading">İçerik bekleniyor<span class="loading-dots"></span></div>
+  </div>
+</div>
+
+<div class="button-row">
+  <button onclick="generate()" id="generateBtn" class="primary-gold">
+    ✦ Yeni İçerik Üret
+  </button>
+  <button class="secondary" onclick="copyContent()" id="copyContentBtn" disabled>
+    Sözü Kopyala
+  </button>
+  <button class="secondary" onclick="changeApiKey()">
+    API Anahtarını Değiştir
+  </button>
+</div>
+
+<!-- Görsel Stili -->
+<div class="section-label">Bugünün Görsel Stili</div>
+<span class="style-tag" id="styleTag">—</span>
+
+<!-- Prompt -->
+<div class="section-label">Gemini Promptu</div>
+<div class="prompt-box" id="promptBox">Önce yeni içerik üretin, ardından prompt burada görüntülenecek.</div>
+
+<div class="button-row">
+  <button onclick="copyPrompt()" id="copyPromptBtn" disabled>
+    📋 Promptu Kopyala
+  </button>
+  <button class="secondary" onclick="newStyle()" id="newStyleBtn" disabled>
+    ↻ Farklı Görsel Stili
+  </button>
+</div>
+
+<a href="https://gemini.google.com/app" target="_blank" class="gemini-link">
+  Gemini'yi Aç →
+</a>
+
+<p class="helper-text">Gemini'de görseli ürettikten sonra, alt %20'lik temiz alana derneğin logosunu Canva üzerinden ekle ve story olarak paylaş.</p>
+
+<footer>
+  <em>"Verdiğiniz şeyleri başa kakmayın, gönül incitmeyin. İşte böyle yapanların ödülü Rableri katındadır."</em>
+  Dilara Ceylan Yardım Derneği · Mersin<br>
+  Google Gemini ile güçlendirildi · Ücretsiz
+</footer>
+
+</div>
+
+<div class="toast" id="toast">Kopyalandı ✓</div>
+
+<script>
+// ============ TEMA VE TÜR HAVUZLARI ============
+
+const temalar = [
+  { id: "yardimlasma", label: "Yardımlaşma", desc: "yardımlaşmanın, paylaşmanın, dayanışmanın değeri" },
+  { id: "yetim", label: "Yetim Hakkı", desc: "yetim çocukları gözetmenin önemi, onları sevindirmenin ulvi değeri" },
+  { id: "cocuk_mutluluk", label: "Çocukların Mutluluğu", desc: "çocukların gülümsemesi, oyun hakkı, geleceğe umutla bakması" },
+  { id: "iyilik", label: "İyilik Yapmak", desc: "iyilik yapmanın güzelliği, küçük iyiliklerin büyük bereketi" },
+  { id: "merhamet", label: "Merhamet", desc: "merhametin gücü, kalbi yumuşatmanın değeri, şefkat" },
+  { id: "sadaka", label: "Sadaka ve Bereket", desc: "sadakanın bereketi, vermenin huzuru, malda hayrın çoğalması" },
+  { id: "komsuluk", label: "Komşuluk", desc: "komşu hakkı, mahalle dayanışması, açın halinden anlamak" },
+  { id: "umut", label: "Umut ve Tevekkül", desc: "zorluklarda umut, Allah'a tevekkül, sabrın güzelliği" },
+  { id: "egitim", label: "Eğitim Hakkı", desc: "her çocuğun okuma, öğrenme, hayal kurma hakkı" },
+  { id: "kardeslik", label: "Kardeşlik", desc: "müminlerin kardeşliği, insanlık ailesi, birbirine sahip çıkmak" }
+];
+
+const turler = [
+  { id: "ayet", label: "Ayet-i Kerîme" },
+  { id: "hadis", label: "Hadîs-i Şerîf" },
+  { id: "soz", label: "Bilgelik Sözü" },
+  { id: "ozgun", label: "Özgün İyilik Çağrısı" },
+  { id: "surpriz", label: "Sürpriz (Rastgele)" }
+];
+
+// ============ GÖRSEL STİL HAVUZU (İslami/Otantik) ============
+
+const stiller = [
+  {
+    name: "Osmanlı Tezhip Sanatı",
+    desc: "authentic Ottoman tezhip illumination manuscript art, aged cream parchment background with hand-painted gold leaf borders, intricate floral rumi and hatayi motifs in deep lapis lazuli blue and vermillion red, natural mineral pigments, 24-karat gold details, museum manuscript quality, zero digital sharpness, everything hand-crafted and centuries old"
+  },
+  {
+    name: "Anadolu Sabahı / Yağlıboya",
+    desc: "painterly oil painting of a vast Anatolian meadow at peaceful dawn, golden morning light stretching across wildflower fields with chamomile and poppy, soft mist on distant hills, warm amber and sage green palette, old master landscape painting with visible brushstrokes, deeply calming and spiritual"
+  },
+  {
+    name: "İznik Çini Motifi",
+    desc: "traditional Iznik ceramic tile art, deep cobalt blue and white background with hand-painted tulip, carnation and pomegranate motifs, rich ruby red accents, authentic aged ceramic with fine crackle glaze, 16th century Ottoman craftsmanship, organic hand-painted forms"
+  },
+  {
+    name: "Kandil Işığı / Cami Atmosferi",
+    desc: "warm atmospheric oil painting of sacred mosque interior light without any people, gentle golden candlelight from hanging copper oil lanterns casting amber glow on ancient stone arches, soft shadows, dust particles in sacred light, old master technique"
+  },
+  {
+    name: "Doğu Minyatür Sanatı",
+    desc: "Persian and Ottoman miniature painting style, flat decorative composition with rich jewel-toned colors — deep gold, ruby red, turquoise, emerald — hand-painted stylized botanical elements, cloud bands, flowering trees, fine ink outlines, aged parchment, ancient illustrated manuscript aesthetic"
+  },
+  {
+    name: "Kutsal Zeytin Bahçesi",
+    desc: "timeless oil painting of ancient gnarled silver-green olive trees at golden dusk, warm ochre and burnt sienna earth, twisted trunks with centuries of stories, soft distant hills under amber sky, thick impasto brushwork, Mediterranean sacred land feeling"
+  },
+  {
+    name: "Hilal & Yıldız / Gece Seması",
+    desc: "hand-painted night sky in the style of classical Islamic celestial manuscripts, deep indigo and midnight blue washes, golden crescent moon and hand-drawn golden stars, soft watercolor bleeding at edges, ancient astronomical chart beauty"
+  },
+  {
+    name: "Osmanlı Hat & Ebru",
+    desc: "classical Ottoman calligraphy panel on aged cream paper with visible fiber texture, hand-marbled ebru border swirling in earthy tones — burgundy, amber, teal — slightly worn edges, dusty gold ink, warm candlelight color, antique treasure feeling"
+  },
+  {
+    name: "Anadolu Köyü / Sabah Sessizliği",
+    desc: "warm rustic oil painting of early morning without people, ancient stone walls draped in wild climbing roses, earthen clay pots with wildflowers, hand-woven linen and straw textures, soft dappled sunlight through vine leaves, Anatolian village stillness, ochre and terracotta palette"
+  },
+  {
+    name: "Sır Sisi / Mistik Suluboya",
+    desc: "ethereal ink wash and watercolor of morning mist rising over still reed lake, ancient willow trees reflected below, pale gold sunrise filtering through translucent haze, deeply peaceful, Persian and Ottoman watercolor fusion, only soft bleeds and washes"
+  },
+  {
+    name: "Güvercinler & Çiçekli Dal",
+    desc: "detailed naturalistic painting of white doves resting among blooming almond, pomegranate and olive branches, soft spring light, botanical illustration meets old master painting, warm ivory background, delicate hand-painted feathers and blossoms, sacred and joyful"
+  },
+  {
+    name: "Anadolu Kilimi Motifi",
+    desc: "rich traditional Anatolian kilim carpet pattern as painting, hand-woven wool texture, warm ruby red, deep indigo, mustard yellow and ivory, geometric tribal motifs with ancient symbolic meaning, aged surface with slight fading, deeply rooted heritage"
+  },
+  {
+    name: "Pınar Başı / Su & Taş",
+    desc: "meditative oil painting of clear spring water flowing gently over mossy ancient stones, small cascade into still emerald pool, lush ferns and wildflowers at water's edge, cool emerald and sage greens with warm amber reflections, thick painterly texture"
+  },
+  {
+    name: "Osmanlı Bahçesi / Bahar",
+    desc: "lush detailed painting of classical Ottoman garden in full spring bloom, wild roses, tulips, hyacinths and wisteria in lavish abundance, ancient stone fountain dry and moss-covered, warm afternoon light through blossoms, divine generosity through nature"
+  },
+  {
+    name: "Hurma & Çöl Vahası",
+    desc: "warm painterly scene of palm date oasis at golden hour, ripe golden dates hanging in clusters, soft desert sand in warm peach and amber, clear pool reflecting palms, gentle breeze in leaves, blessed abundance feeling, no people, ancient Quranic landscape"
+  },
+  {
+    name: "Eski Kitap & Mum Işığı",
+    desc: "still life painting of an antique leather-bound book open on aged wooden table, soft warm candlelight from a single beeswax candle, brass inkwell and dried roses nearby, deep shadows and warm highlights, Rembrandt-style chiaroscuro, contemplative scholarly atmosphere"
+  }
+];
+
+// ============ STATE ============
+
+let state = {
+  apiKey: localStorage.getItem('gemini_api_key') || '',
+  selectedTheme: 'yardimlasma',
+  selectedType: 'surpriz',
+  currentContent: null,
+  currentStyle: null
+};
+
+// ============ INIT ============
+
+function init() {
+  // API key durumu
+  if (state.apiKey) {
+    document.getElementById('apiSetup').classList.add('hidden');
+  }
+
+  // Tema chip'leri
+  const themeChips = document.getElementById('themeChips');
+  temalar.forEach(t => {
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (t.id === state.selectedTheme ? ' active' : '');
+    chip.textContent = t.label;
+    chip.onclick = () => {
+      state.selectedTheme = t.id;
+      document.querySelectorAll('#themeChips .chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    };
+    themeChips.appendChild(chip);
+  });
+
+  // Tür chip'leri
+  const typeChips = document.getElementById('typeChips');
+  turler.forEach(t => {
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (t.id === state.selectedType ? ' active' : '');
+    chip.textContent = t.label;
+    chip.onclick = () => {
+      state.selectedType = t.id;
+      document.querySelectorAll('#typeChips .chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    };
+    typeChips.appendChild(chip);
+  });
+
+  // Tarih
+  updateDate();
+
+  // Eğer API key varsa otomatik ilk üretim
+  if (state.apiKey) {
+    setTimeout(() => generate(), 300);
+  }
+}
+
+function updateDate() {
+  const aylar = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+  const gunler = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const d = new Date();
+  document.getElementById('dateLabel').textContent = `${d.getDate()} ${aylar[d.getMonth()]} · ${gunler[d.getDay()]}`;
+}
+
+// ============ API KEY YÖNETİMİ ============
+
+function saveApiKey() {
+  const input = document.getElementById('apiKeyInput');
+  const key = input.value.trim();
+  if (!key.startsWith('AIza') || key.length < 30) {
+    showToast('Geçersiz Gemini anahtarı (AIza... ile başlamalı)', true);
+    return;
+  }
+  state.apiKey = key;
+  localStorage.setItem('gemini_api_key', key);
+  document.getElementById('apiSetup').classList.add('hidden');
+  showToast('Anahtar kaydedildi ✓');
+  setTimeout(() => generate(), 400);
+}
+
+function changeApiKey() {
+  document.getElementById('apiSetup').classList.remove('hidden');
+  document.getElementById('apiKeyInput').value = state.apiKey;
+  document.getElementById('apiKeyInput').focus();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============ CLAUDE OPUS 4.7 İLE İÇERİK ÜRETİMİ ============
+
+async function generate() {
+  if (!state.apiKey) {
+    showToast('Önce API anahtarını ekleyin', true);
+    document.getElementById('apiKeyInput').focus();
+    return;
+  }
+
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loading-dots"></span> Üretiliyor';
+
+  document.getElementById('contentArea').innerHTML =
+    '<div class="loading">Gemini düşünüyor<span class="loading-dots"></span></div>';
+
+  const tema = temalar.find(t => t.id === state.selectedTheme);
+
+  let turKisitlamasi = '';
+  if (state.selectedType === 'ayet') turKisitlamasi = "İçerik MUTLAKA Kuran-ı Kerim'den bir ayet olmalı.";
+  else if (state.selectedType === 'hadis') turKisitlamasi = "İçerik MUTLAKA sahih bir hadîs-i şerîf olmalı (Buhârî, Müslim, Tirmizî gibi kaynaklardan).";
+  else if (state.selectedType === 'soz') turKisitlamasi = "İçerik bir bilgelik sözü olmalı (Mevlânâ, Yunus Emre, Sa'di, halk sözü veya bir Türk atasözü).";
+  else if (state.selectedType === 'ozgun') turKisitlamasi = "İçerik özgün bir iyilik çağrısı olmalı — kısa, çarpıcı, kalbe dokunan bir cümle.";
+  else turKisitlamasi = "İçerik şu seçeneklerden biri olabilir: ayet, hadis, bilgelik sözü veya özgün iyilik çağrısı. En uygun olanı seç.";
+
+  // Rastgelelik için her seferinde farklı seed
+  const seed = Math.floor(Math.random() * 1000000);
+
+  const fullPrompt = `Sen Dilara Ceylan Yardım Derneği'nin günlük Instagram story içerik üretici asistanısın. Bu dernek Mersin'de faaliyet gösteren, özellikle yetim çocuklara ve ihtiyaç sahibi ailelere yardım eden bir hayır kuruluşudur.
+
+GÖREVİN: Verilen temaya uygun, kalbe dokunan, motive eden, dini ve manevi açıdan güvenilir bir içerik üretmek.
+
+KURALLAR:
+- Türkçe üret.
+- ${turKisitlamasi}
+- İçerik tema ile DOĞRUDAN ilgili olmalı: ${tema.desc}
+- Ayet veya hadis seçtiysen, MUTLAKA gerçek ve doğru kaynak ver. Uydurma yapma. Emin değilsen başka bir ayet/hadis seç.
+- Asla insanları küçük düşüren, suçlayan ya da utandıran bir dil kullanma. Sıcak, davetkar bir ton kullan.
+- Cümle kısa ve story görseline yerleştirilebilir uzunlukta olmalı (max 150 karakter ideal).
+- Her seferinde FARKLI bir söz üret, aynısını tekrar etme. Yaratıcılığın için tohum: ${seed}
+
+ÇIKTI FORMATI: Sadece geçerli JSON döndür, başka hiçbir şey yazma, markdown code fence kullanma. Şu formatta:
+{
+  "tur": "Ayet-i Kerîme veya Hadîs-i Şerîf veya Bilgelik Sözü veya İyilik Çağrısı",
+  "metin": "İçeriğin kendisi (tırnak işareti olmadan)",
+  "kaynak": "Kaynağın tam adı (örn: 'Bakara Suresi, 261' veya 'Hz. Muhammed sav · Buhârî' veya 'Mevlânâ Celâleddîn-i Rûmî' veya 'Dilara Ceylan Yardım Derneği')"
+}
+
+İSTEK:
+Tema: ${tema.label} (${tema.desc})
+İçerik türü: ${turler.find(t => t.id === state.selectedType).label}
+
+Bugünün story'si için bu temaya uygun, özgün bir içerik üret.`;
+
+  const model = 'gemini-2.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(state.apiKey)}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          role: 'user',
+          parts: [{ text: fullPrompt }]
+        }],
+        generationConfig: {
+          temperature: 1.0,
+          maxOutputTokens: 1024,
+          responseMimeType: 'application/json'
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      let friendlyMsg = errText.substring(0, 300);
+      if (response.status === 429) friendlyMsg = 'Dakika başına istek limiti aşıldı, birazdan tekrar dene.';
+      else if (response.status === 400) friendlyMsg = 'İstek hatası — API anahtarını kontrol et.';
+      else if (response.status === 403) friendlyMsg = 'API anahtarı geçersiz veya yetkisiz.';
+      throw new Error(`(${response.status}) ${friendlyMsg}`);
+    }
+
+    const data = await response.json();
+    let text = '';
+    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
+      text = data.candidates[0].content.parts.map(p => p.text || '').join('').trim();
+    }
+
+    if (!text) throw new Error('Boş yanıt geldi. Tekrar dene.');
+
+    // JSON parse - bazen markdown fence içinde gelebilir
+    text = text.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```\s*$/, '').trim();
+
+    const parsed = JSON.parse(text);
+
+    state.currentContent = parsed;
+    state.currentStyle = stiller[Math.floor(Math.random() * stiller.length)];
+
+    renderContent();
+    renderPrompt();
+
+    showToast('Yeni içerik hazır ✓');
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('contentArea').innerHTML =
+      `<div class="loading" style="color: var(--rose-deep);">Hata: ${err.message}<br><br>Tekrar deneyin veya API anahtarını kontrol edin.</div>`;
+    showToast('Üretim başarısız oldu', true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '✦ Yeni İçerik Üret';
+  }
+}
+
+function renderContent() {
+  const c = state.currentContent;
+  document.getElementById('contentTypeLabel').textContent = c.tur;
+  document.getElementById('contentArea').innerHTML = `
+    <div class="content-text">${escapeHtml(c.metin)}</div>
+    <div class="content-source">${escapeHtml(c.kaynak)}</div>
+  `;
+  document.getElementById('copyContentBtn').disabled = false;
+}
+
+function renderPrompt() {
+  document.getElementById('styleTag').textContent = state.currentStyle.name;
+  const prompt = buildPrompt(state.currentContent, state.currentStyle);
+  document.getElementById('promptBox').textContent = prompt;
+  document.getElementById('copyPromptBtn').disabled = false;
+  document.getElementById('newStyleBtn').disabled = false;
+}
+
+function buildPrompt(content, style) {
+  return `Create a vertical Instagram story image (9:16 aspect ratio, 1080x1920px) for a Turkish charity association that helps orphans and children in need.
+
+VISUAL STYLE:
+${style.desc}.
+
+ABSOLUTE RULES (must follow strictly):
+- NO human figures, NO human silhouettes, NO faces, NO people of any kind anywhere in the image
+- NO realistic or stylized depictions of children, adults, or any human body parts (including hands when shown alone could be misread as human presence — only allowed as small symbolic elements if abstracted)
+- Use only symbolic, abstract, natural or decorative elements
+- NO modern design clichés: no glassmorphism, no gradient meshes, no flat vector style, no minimalist line art, no 3D renders, no AI-obvious aesthetics
+
+COMPOSITION:
+- Leave generous breathing space in the upper-middle area for elegant Turkish text overlay
+- IMPORTANT: Leave the BOTTOM 20% of the frame as a completely clean, empty, uncluttered area with a soft neutral background flowing from the main composition. No decorations, no elements, no text in this bottom area. This space is reserved for a logo to be added later.
+- Soft, calming, emotionally warm atmosphere that inspires generosity, hope and compassion
+
+SYMBOLIC ELEMENTS (choose only what fits the mood, not all):
+- An open hand-painted seed sprouting, a dove of peace, a single lit oil lamp, a glowing lantern
+- A small wooden bowl with grain, an antique brass key, an open manuscript page
+- A paper boat on still water, an olive branch, wheat stalks, scattered rose petals
+- Warm light rays through clouds, a crescent moon, hand-painted stars
+- Nature: gentle streams, sunrise behind hills, a single tree, flowering branches
+
+TEXT TO INTEGRATE (place beautifully in Turkish, use elegant serif font like classical naskh or modern serif, positioned in the upper-middle portion of the frame):
+"${content.metin}"
+
+Attribution line (smaller, italic, subtle, placed just below the main text):
+— ${content.kaynak}
+
+DO NOT add any brand name, association name, or text in the bottom area. The bottom 20% must remain completely clean.
+
+MOOD: peaceful, hopeful, spiritually uplifting, authentic, timeless, suitable for Muslim audience, emotionally resonant — like a page from an old illuminated manuscript brought to life.
+
+QUALITY: high-resolution, painterly, hand-crafted feel, NOT digital or AI-obvious, premium non-profit aesthetic with the warmth of an old painting or manuscript.`;
+}
+
+function newStyle() {
+  if (!state.currentContent) {
+    showToast('Önce içerik üretin', true);
+    return;
+  }
+  // Yeni stil seç (mevcut hariç)
+  let newS;
+  do {
+    newS = stiller[Math.floor(Math.random() * stiller.length)];
+  } while (newS.name === state.currentStyle.name && stiller.length > 1);
+  state.currentStyle = newS;
+  renderPrompt();
+  showToast('Yeni stil ↻');
+}
+
+// ============ COPY FUNCTIONS ============
+
+function copyPrompt() {
+  const text = document.getElementById('promptBox').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Prompt kopyalandı ✓'));
+}
+
+function copyContent() {
+  if (!state.currentContent) return;
+  const text = `"${state.currentContent.metin}"\n— ${state.currentContent.kaynak}`;
+  navigator.clipboard.writeText(text).then(() => showToast('Söz kopyalandı ✓'));
+}
+
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', isError);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ============ KEYBOARD SHORTCUTS ============
+
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    generate();
+  }
+});
+
+// Enter ile API key kaydet
+document.getElementById('apiKeyInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') saveApiKey();
+});
+
+init();
+</script>
+</body>
+</html>
