@@ -343,6 +343,70 @@ h1 .accent {
   margin-bottom: 18px;
 }
 
+/* ============ TABS ============ */
+.tab-row {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 14px 16px;
+  color: var(--ink-soft);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s;
+}
+.tab-btn:hover:not(.active) {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.3);
+  transform: none;
+  box-shadow: none;
+}
+.tab-btn.active {
+  color: var(--ink);
+  border-bottom-color: var(--rose-deep);
+  background: rgba(255, 255, 255, 0.4);
+}
+.tab-icon { font-size: 16px; color: var(--gold); }
+.tab-btn.active .tab-icon { color: var(--rose-deep); }
+
+.tab-content {
+  display: none;
+  padding-top: 20px;
+}
+.tab-content.active { display: block; }
+
+.style-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.style-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  font-weight: 600;
+}
+.style-row .style-tag { margin-bottom: 0; }
+
 .prompt-box {
   background: #1a0f08;
   color: #f4ecd8;
@@ -564,28 +628,57 @@ footer em {
   </button>
 </div>
 
-<!-- Görsel Stili -->
-<div class="section-label">Bugünün Görsel Stili</div>
-<span class="style-tag" id="styleTag">—</span>
+<!-- Görsel Stili & Prompt - Tabbed -->
+<div class="section-label">İki Farklı Görsel Dili</div>
 
-<!-- Prompt -->
-<div class="section-label">Gemini Promptu</div>
-<div class="prompt-box" id="promptBox">Önce yeni içerik üretin, ardından prompt burada görüntülenecek.</div>
+<div class="tab-row">
+  <button class="tab-btn active" data-tab="otantik" onclick="switchTab('otantik')">
+    <span class="tab-icon">⚱</span>
+    <span class="tab-label">Otantik & Duygusal</span>
+  </button>
+  <button class="tab-btn" data-tab="modern" onclick="switchTab('modern')">
+    <span class="tab-icon">✨</span>
+    <span class="tab-label">Modern & Eğlenceli</span>
+  </button>
+</div>
 
-<div class="button-row">
-  <button onclick="copyPrompt()" id="copyPromptBtn" disabled>
-    📋 Promptu Kopyala
-  </button>
-  <button class="secondary" onclick="newStyle()" id="newStyleBtn" disabled>
-    ↻ Farklı Görsel Stili
-  </button>
+<div class="tab-content active" id="tab-otantik">
+  <div class="style-row">
+    <span class="style-label">Stil:</span>
+    <span class="style-tag" id="styleTagOtantik">—</span>
+  </div>
+  <div class="prompt-box" id="promptBoxOtantik">Önce yeni içerik üretin.</div>
+  <div class="button-row">
+    <button onclick="copyPrompt('otantik')" id="copyPromptBtnOtantik" disabled>
+      📋 Otantik Promptu Kopyala
+    </button>
+    <button class="secondary" onclick="newStyle('otantik')" id="newStyleBtnOtantik" disabled>
+      ↻ Farklı Otantik Stil
+    </button>
+  </div>
+</div>
+
+<div class="tab-content" id="tab-modern">
+  <div class="style-row">
+    <span class="style-label">Stil:</span>
+    <span class="style-tag" id="styleTagModern">—</span>
+  </div>
+  <div class="prompt-box" id="promptBoxModern">Önce yeni içerik üretin.</div>
+  <div class="button-row">
+    <button onclick="copyPrompt('modern')" id="copyPromptBtnModern" disabled>
+      📋 Modern Promptu Kopyala
+    </button>
+    <button class="secondary" onclick="newStyle('modern')" id="newStyleBtnModern" disabled>
+      ↻ Farklı Modern Stil
+    </button>
+  </div>
 </div>
 
 <a href="https://gemini.google.com/app" target="_blank" class="gemini-link">
   Gemini'yi Aç →
 </a>
 
-<p class="helper-text">Gemini'de görseli ürettikten sonra, alt %20'lik temiz alana derneğin logosunu Canva üzerinden ekle ve story olarak paylaş.</p>
+<p class="helper-text">İki farklı kitle için iki farklı dil: otantik versiyon klasik kitleye, modern versiyon genç takipçilere hitap eder. İkisini de aynı söz üzerinden farklı günlerde paylaşabilirsin.</p>
 
 <footer>
   <em>"Verdiğiniz şeyleri başa kakmayın, gönül incitmeyin. İşte böyle yapanların ödülü Rableri katındadır."</em>
@@ -621,9 +714,10 @@ const turler = [
   { id: "surpriz", label: "Sürpriz (Rastgele)" }
 ];
 
-// ============ GÖRSEL STİL HAVUZU (İslami/Otantik) ============
+// ============ GÖRSEL STİL HAVUZLARI ============
 
-const stiller = [
+// OTANTİK & DUYGUSAL - klasik kitleye, manevi atmosfere uygun
+const stillerOtantik = [
   {
     name: "Osmanlı Tezhip Sanatı",
     desc: "authentic Ottoman tezhip illumination manuscript art, aged cream parchment background with hand-painted gold leaf borders, intricate floral rumi and hatayi motifs in deep lapis lazuli blue and vermillion red, natural mineral pigments, 24-karat gold details, museum manuscript quality, zero digital sharpness, everything hand-crafted and centuries old"
@@ -690,6 +784,77 @@ const stiller = [
   }
 ];
 
+// MODERN & EĞLENCELİ - genç kitleye, taze ve sevimli atmosfere uygun
+const stillerModern = [
+  {
+    name: "Sıcak Pastel İllüstrasyon",
+    desc: "warm friendly modern illustration with rounded soft shapes, cozy pastel palette of peach, sage green, butter yellow and dusty pink, hand-drawn imperfect lines, playful but warm, contemporary children's book aesthetic, soft grain texture, joyful and inviting"
+  },
+  {
+    name: "Risograph Baskı",
+    desc: "trendy risograph print aesthetic with limited bright palette (coral pink, electric blue, sunny yellow), playful overlapping shapes, slight registration offset for retro charm, grainy texture, indie zine vibes, fresh and youthful, modern minimalist composition"
+  },
+  {
+    name: "Y2K Glow / Soft Neon",
+    desc: "modern dreamy aesthetic with soft glowing pastel gradients, lavender pink and mint blue, subtle bokeh light particles, glossy 3D bubble shapes floating, ethereal and uplifting, contemporary social media trend, sparkly highlights, optimistic vibe"
+  },
+  {
+    name: "Düz Vektör / Modern Flat",
+    desc: "clean modern flat vector illustration with bold geometric shapes, fresh palette of teal, coral and cream, generous negative space, contemporary editorial style, simple symbolic icons (heart, sun, sprout), confident and accessible design"
+  },
+  {
+    name: "Kawaii Pastel Dünya",
+    desc: "adorable kawaii-inspired soft scene with cute rounded elements — smiling clouds, little stars with tiny faces, blooming flowers — soft pastel palette of cotton candy pink and baby blue, whimsical and heartwarming, sticker book aesthetic, modern playful"
+  },
+  {
+    name: "Cesur Tipografi",
+    desc: "bold modern typography-forward design, large playful serif and sans-serif mix in warm coral and deep teal, asymmetric layout, vibrant flat color blocks, contemporary editorial magazine aesthetic, confident and energetic"
+  },
+  {
+    name: "Renkli Suluboya Modern",
+    desc: "modern bright watercolor illustration with bold color splashes — vivid coral, golden yellow, fresh mint — loose energetic brushwork, ink splatters and drips, playful and expressive, contemporary art journal vibes, joyful and free-spirited"
+  },
+  {
+    name: "Klasik Vintage Poster",
+    desc: "1970s style retro poster aesthetic with warm vintage palette (mustard, rust orange, cream, avocado green), bold rounded sans-serif typography, simple geometric sun and flower motifs, slight halftone print texture, nostalgic and cheerful"
+  },
+  {
+    name: "3D Soft Balloons",
+    desc: "modern 3D rendered scene with soft inflatable balloon-like shapes in pastel candy colors (peach, lilac, mint), glossy smooth surfaces with soft shadows, dreamy floating composition, contemporary playful aesthetic, light and joyful"
+  },
+  {
+    name: "Botanik Modern Çizim",
+    desc: "fresh modern botanical illustration with stylized leaves and flowers, bright cheerful palette of fresh green, soft yellow and warm pink, hand-drawn organic lines on cream background, contemporary scandinavian-inspired design, optimistic and clean"
+  },
+  {
+    name: "Pop Art Renkli",
+    desc: "vibrant modern pop art style with bold flat color blocks, energetic palette of magenta, electric yellow and turquoise, simple iconic shapes (hearts, stars, hands giving), playful comic book influence, high energy and youthful confidence"
+  },
+  {
+    name: "Soft Gradient Aurora",
+    desc: "dreamy modern aesthetic with soft flowing gradient mesh, calming aurora colors (peach to lavender to mint), subtle grain texture, abstract organic shapes floating, contemporary instagram-friendly design, peaceful yet trendy"
+  },
+  {
+    name: "Karikatür Sevimli",
+    desc: "modern friendly cartoon illustration with cute simplified symbolic elements — happy little plants, smiling sun, dancing hearts — warm bright palette, hand-drawn confident lines, contemporary animation studio style (Pixar-inspired warmth without copying), uplifting and approachable"
+  },
+  {
+    name: "Origami Pastel",
+    desc: "modern minimalist origami paper craft aesthetic, geometric folded paper shapes (cranes, hearts, stars) in soft pastel palette of blush pink, sky blue and butter cream, clean drop shadows, fresh contemporary composition, calming yet modern"
+  },
+  {
+    name: "Sticker Pop / Çıkartma",
+    desc: "trendy sticker-pack illustration style with bold outlined shapes, cheerful elements like rainbows, suns, flowers and hearts in vivid candy colors, white outlines around each element, fun and energetic, contemporary gen-z aesthetic, joyful chaos"
+  },
+  {
+    name: "Modern Çocuk Kitabı",
+    desc: "contemporary children's book illustration in the warm style of modern Turkish illustrators, soft chunky shapes, warm earthy palette with pops of brightness (terracotta, sage, butter yellow), gentle texture, both cozy and modern, hopeful storybook vibes"
+  }
+];
+
+// Geriye dönük uyumluluk için
+const stiller = stillerOtantik;
+
 // ============ STATE ============
 
 let state = {
@@ -697,7 +862,9 @@ let state = {
   selectedTheme: 'yardimlasma',
   selectedType: 'surpriz',
   currentContent: null,
-  currentStyle: null
+  currentStyleOtantik: null,
+  currentStyleModern: null,
+  activeTab: 'otantik'
 };
 
 // ============ INIT ============
@@ -906,10 +1073,11 @@ Bugünün story'si için bu temaya uygun, özgün bir içerik üret.`;
     if (!parsed.tur) parsed.tur = 'İyilik Çağrısı';
 
     state.currentContent = parsed;
-    state.currentStyle = stiller[Math.floor(Math.random() * stiller.length)];
+    state.currentStyleOtantik = stillerOtantik[Math.floor(Math.random() * stillerOtantik.length)];
+    state.currentStyleModern = stillerModern[Math.floor(Math.random() * stillerModern.length)];
 
     renderContent();
-    renderPrompt();
+    renderPrompts();
 
     showToast('Yeni içerik hazır ✓');
 
@@ -934,15 +1102,31 @@ function renderContent() {
   document.getElementById('copyContentBtn').disabled = false;
 }
 
-function renderPrompt() {
-  document.getElementById('styleTag').textContent = state.currentStyle.name;
-  const prompt = buildPrompt(state.currentContent, state.currentStyle);
-  document.getElementById('promptBox').textContent = prompt;
-  document.getElementById('copyPromptBtn').disabled = false;
-  document.getElementById('newStyleBtn').disabled = false;
+function renderPrompts() {
+  // Otantik prompt
+  document.getElementById('styleTagOtantik').textContent = state.currentStyleOtantik.name;
+  document.getElementById('promptBoxOtantik').textContent = buildPrompt(state.currentContent, state.currentStyleOtantik, 'otantik');
+  document.getElementById('copyPromptBtnOtantik').disabled = false;
+  document.getElementById('newStyleBtnOtantik').disabled = false;
+
+  // Modern prompt
+  document.getElementById('styleTagModern').textContent = state.currentStyleModern.name;
+  document.getElementById('promptBoxModern').textContent = buildPrompt(state.currentContent, state.currentStyleModern, 'modern');
+  document.getElementById('copyPromptBtnModern').disabled = false;
+  document.getElementById('newStyleBtnModern').disabled = false;
 }
 
-function buildPrompt(content, style) {
+function buildPrompt(content, style, kategori) {
+  const moodOtantik = `MOOD: peaceful, hopeful, spiritually uplifting, authentic, timeless, suitable for Muslim audience, emotionally resonant — like a page from an old illuminated manuscript brought to life.
+
+QUALITY: high-resolution, painterly, hand-crafted feel, NOT digital or AI-obvious, premium non-profit aesthetic with the warmth of an old painting or manuscript.`;
+
+  const moodModern = `MOOD: warm, hopeful, fresh, modern, uplifting, joyful, suitable for young Muslim audience and gen-z social media followers, emotionally engaging while being visually trendy and shareable. Should feel like premium contemporary non-profit branding — think modern charity campaigns by organizations like Unicef or TOG. Approachable, optimistic, and human-centered without depicting humans.
+
+QUALITY: high-resolution, polished modern design, contemporary social media aesthetic, instantly shareable, eye-catching but tasteful, premium quality.`;
+
+  const mood = kategori === 'modern' ? moodModern : moodOtantik;
+
   return `Create a vertical Instagram story image (9:16 aspect ratio, 1080x1920px) for a Turkish charity association that helps orphans and children in need.
 
 VISUAL STYLE:
@@ -950,23 +1134,22 @@ ${style.desc}.
 
 ABSOLUTE RULES (must follow strictly):
 - NO human figures, NO human silhouettes, NO faces, NO people of any kind anywhere in the image
-- NO realistic or stylized depictions of children, adults, or any human body parts (including hands when shown alone could be misread as human presence — only allowed as small symbolic elements if abstracted)
+- NO realistic or stylized depictions of children, adults, or any human body parts
 - Use only symbolic, abstract, natural or decorative elements
-- NO modern design clichés: no glassmorphism, no gradient meshes, no flat vector style, no minimalist line art, no 3D renders, no AI-obvious aesthetics
 
 COMPOSITION:
 - Leave generous breathing space in the upper-middle area for elegant Turkish text overlay
 - IMPORTANT: Leave the BOTTOM 20% of the frame as a completely clean, empty, uncluttered area with a soft neutral background flowing from the main composition. No decorations, no elements, no text in this bottom area. This space is reserved for a logo to be added later.
-- Soft, calming, emotionally warm atmosphere that inspires generosity, hope and compassion
+- Atmosphere that inspires generosity, hope and compassion
 
 SYMBOLIC ELEMENTS (choose only what fits the mood, not all):
-- An open hand-painted seed sprouting, a dove of peace, a single lit oil lamp, a glowing lantern
+- An open seed sprouting, a dove of peace, a single lit lamp, a glowing lantern
 - A small wooden bowl with grain, an antique brass key, an open manuscript page
 - A paper boat on still water, an olive branch, wheat stalks, scattered rose petals
 - Warm light rays through clouds, a crescent moon, hand-painted stars
 - Nature: gentle streams, sunrise behind hills, a single tree, flowering branches
 
-TEXT TO INTEGRATE (place beautifully in Turkish, use elegant serif font like classical naskh or modern serif, positioned in the upper-middle portion of the frame):
+TEXT TO INTEGRATE (place beautifully in Turkish, positioned in the upper-middle portion of the frame):
 "${content.metin}"
 
 Attribution line (smaller, italic, subtle, placed just below the main text):
@@ -974,31 +1157,45 @@ Attribution line (smaller, italic, subtle, placed just below the main text):
 
 DO NOT add any brand name, association name, or text in the bottom area. The bottom 20% must remain completely clean.
 
-MOOD: peaceful, hopeful, spiritually uplifting, authentic, timeless, suitable for Muslim audience, emotionally resonant — like a page from an old illuminated manuscript brought to life.
-
-QUALITY: high-resolution, painterly, hand-crafted feel, NOT digital or AI-obvious, premium non-profit aesthetic with the warmth of an old painting or manuscript.`;
+${mood}`;
 }
 
-function newStyle() {
+function switchTab(tabName) {
+  state.activeTab = tabName;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+  document.querySelectorAll('.tab-content').forEach(content => {
+    content.classList.toggle('active', content.id === `tab-${tabName}`);
+  });
+}
+
+function newStyle(kategori) {
   if (!state.currentContent) {
     showToast('Önce içerik üretin', true);
     return;
   }
-  // Yeni stil seç (mevcut hariç)
+  const havuz = kategori === 'modern' ? stillerModern : stillerOtantik;
+  const mevcut = kategori === 'modern' ? state.currentStyleModern : state.currentStyleOtantik;
+
   let newS;
   do {
-    newS = stiller[Math.floor(Math.random() * stiller.length)];
-  } while (newS.name === state.currentStyle.name && stiller.length > 1);
-  state.currentStyle = newS;
-  renderPrompt();
+    newS = havuz[Math.floor(Math.random() * havuz.length)];
+  } while (newS.name === mevcut.name && havuz.length > 1);
+
+  if (kategori === 'modern') state.currentStyleModern = newS;
+  else state.currentStyleOtantik = newS;
+
+  renderPrompts();
   showToast('Yeni stil ↻');
 }
 
-// ============ COPY FUNCTIONS ============
-
-function copyPrompt() {
-  const text = document.getElementById('promptBox').textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('Prompt kopyalandı ✓'));
+function copyPrompt(kategori) {
+  const boxId = kategori === 'modern' ? 'promptBoxModern' : 'promptBoxOtantik';
+  const text = document.getElementById(boxId).textContent;
+  navigator.clipboard.writeText(text).then(() =>
+    showToast(`${kategori === 'modern' ? 'Modern' : 'Otantik'} prompt kopyalandı ✓`)
+  );
 }
 
 function copyContent() {
