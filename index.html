@@ -843,8 +843,11 @@ Bugünün story'si için bu temaya uygun, özgün bir içerik üret.`;
         }],
         generationConfig: {
           temperature: 1.0,
-          maxOutputTokens: 1024,
-          responseMimeType: 'application/json'
+          maxOutputTokens: 4096,
+          responseMimeType: 'application/json',
+          thinkingConfig: {
+            thinkingBudget: 0
+          }
         }
       })
     });
@@ -859,6 +862,20 @@ Bugünün story'si için bu temaya uygun, özgün bir içerik üret.`;
     }
 
     const data = await response.json();
+
+    // Finish reason kontrolü
+    if (data.candidates && data.candidates[0]) {
+      const candidate = data.candidates[0];
+      if (candidate.finishReason && candidate.finishReason !== 'STOP') {
+        if (candidate.finishReason === 'MAX_TOKENS') {
+          throw new Error('Yanıt çok uzun — token limiti aşıldı. Tekrar deneyin.');
+        }
+        if (candidate.finishReason === 'SAFETY') {
+          throw new Error('Güvenlik filtresine takıldı. Başka bir tema deneyin.');
+        }
+      }
+    }
+
     let text = '';
     if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
       text = data.candidates[0].content.parts.map(p => p.text || '').join('').trim();
@@ -866,10 +883,27 @@ Bugünün story'si için bu temaya uygun, özgün bir içerik üret.`;
 
     if (!text) throw new Error('Boş yanıt geldi. Tekrar dene.');
 
-    // JSON parse - bazen markdown fence içinde gelebilir
+    // Markdown code fence varsa temizle
     text = text.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```\s*$/, '').trim();
 
-    const parsed = JSON.parse(text);
+    // JSON parse — yarım gelirse bile kurtarmayı dene
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch (parseErr) {
+      // Regex ile alanları manuel çıkarmayı dene (son çare)
+      parsed = tryRecoverJson(text);
+      if (!parsed) {
+        console.error('Parse edilemeyen yanıt:', text);
+        throw new Error('Yanıt anlaşılamadı. Tekrar deneyin.');
+      }
+    }
+
+    // Zorunlu alanları kontrol et
+    if (!parsed.metin || !parsed.kaynak) {
+      throw new Error('Eksik yanıt — tekrar deneyin.');
+    }
+    if (!parsed.tur) parsed.tur = 'İyilik Çağrısı';
 
     state.currentContent = parsed;
     state.currentStyle = stiller[Math.floor(Math.random() * stiller.length)];
@@ -983,6 +1017,26 @@ function showToast(msg, isError = false) {
 
 function escapeHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Yarım veya bozuk JSON'dan alanları kurtarmaya çalış
+function tryRecoverJson(text) {
+  try {
+    const turMatch = text.match(/"tur"\s*:\s*"([^"]+)"/);
+    const metinMatch = text.match(/"metin"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
+    const kaynakMatch = text.match(/"kaynak"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/);
+
+    if (metinMatch && kaynakMatch) {
+      return {
+        tur: turMatch ? turMatch[1] : 'İyilik Çağrısı',
+        metin: metinMatch[1].replace(/\\"/g, '"').replace(/\\n/g, ' '),
+        kaynak: kaynakMatch[1].replace(/\\"/g, '"')
+      };
+    }
+  } catch (e) {
+    return null;
+  }
+  return null;
 }
 
 // ============ KEYBOARD SHORTCUTS ============
